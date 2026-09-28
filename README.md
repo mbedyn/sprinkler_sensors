@@ -13,7 +13,7 @@ This component works on **all ESPHome-supported platforms**, including
 
 ---
 
-## ✨ Features
+##  Features
 
 - ✔ Reads real-time data directly from ESPHome Sprinkler Controller  
 - ✔ Works on ESP-IDF (ESP32‑C6, ESP32‑C3, ESP32‑H2)  
@@ -22,17 +22,26 @@ This component works on **all ESPHome-supported platforms**, including
   - `time_remaining`
   - `progress`
   - `section_name`
-- ✔ Zero YAML hacks — full CONFIG_SCHEMA support  
-- ✔ Clean integration with Home Assistant  
-- ✔ Lightweight and fast (updates every loop)
 
----
 
-## 📦 Installation
+##  Installation
 
 Add this repository as an external component in your ESPHome YAML:
 
 ```yaml
 external_components:
   - source: github://mbedyn/sprinkler_sensors
-    refresh: 60s
+    components: [sprinkler_sensors]
+    refresh: 0s
+
+sprinkler_sensors:
+  sprinkler_id: garden_ctrl
+  update_interval: 1s
+  active_valve:
+    name: "active_valve"
+  time_remaining:
+    name: "time_remaining"
+  progress:
+    name: "progress"
+  section_name:
+    name: "section_name"
