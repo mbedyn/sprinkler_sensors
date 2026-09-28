@@ -14,9 +14,10 @@ from .schema import (
 sprinkler_ns = cg.esphome_ns.namespace("sprinkler_sensors")
 SprinklerSensorsComponent = sprinkler_ns.class_("SprinklerSensorsComponent", cg.Component)
 
+# *** KLUCZOWE: powiązanie SCHEMATU z platformą ***
 CONFIG_SCHEMA = sprinkler_sensors_schema
 
-# *** KLUCZOWA LINIA — REJESTRACJA PLATFORMY ***
+# *** KLUCZOWE: rejestracja platformy sensorowej ***
 sensor.register_sensor_platform("sprinkler_sensors", CONFIG_SCHEMA)
 
 def to_code(config):
