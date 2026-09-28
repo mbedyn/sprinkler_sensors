@@ -21,7 +21,7 @@ CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(SprinklerSensorsComponent),
         cv.Required(CONF_SPRINKLER_ID): cv.use_id(sprinkler.Sprinkler),
-        cv.Optional(CONF_ACTIVE_VALVE): sensor.sensor_schema(accuracy_decimals=0),
+        cv.Optional(CONF_ACTIVE_VALVE): text_sensor.text_sensor_schema(),
         cv.Optional(CONF_TIME_REMAINING): sensor.sensor_schema(
             unit_of_measurement=UNIT_SECOND, accuracy_decimals=0
         ),
@@ -33,9 +33,13 @@ CONFIG_SCHEMA = cv.Schema(
 ).extend(cv.polling_component_schema("1s"))
 
 NUMERIC = {
-    CONF_ACTIVE_VALVE: "set_active_valve_sensor",
     CONF_TIME_REMAINING: "set_time_remaining_sensor",
     CONF_PROGRESS: "set_progress_sensor",
+}
+
+TEXT = {
+    CONF_ACTIVE_VALVE: "set_active_valve_sensor",
+    CONF_SECTION_NAME: "set_section_name_sensor",
 }
 
 
@@ -51,6 +55,7 @@ async def to_code(config):
             s = await sensor.new_sensor(config[key])
             cg.add(getattr(var, setter)(s))
 
-    if CONF_SECTION_NAME in config:
-        ts = await text_sensor.new_text_sensor(config[CONF_SECTION_NAME])
-        cg.add(var.set_section_name_sensor(ts))
+    for key, setter in TEXT.items():
+        if key in config:
+            ts = await text_sensor.new_text_sensor(config[key])
+            cg.add(getattr(var, setter)(ts))
