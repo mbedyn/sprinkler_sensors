@@ -13,8 +13,15 @@ void SprinklerSensorsComponent::update() {
   auto active = this->sprinkler_->active_valve();
   auto remaining = this->sprinkler_->time_remaining_active_valve();
 
-  if (this->active_valve_sensor_ != nullptr)
-    this->active_valve_sensor_->publish_state(active.has_value() ? (float) (*active + 1) : NAN);
+  if (this->active_valve_sensor_ != nullptr) {
+    if (active.has_value()) {
+      std::string label =
+          std::to_string(*active + 1) + " - " + this->sprinkler_->valve_name(*active);
+      this->active_valve_sensor_->publish_state(label);
+    } else {
+      this->active_valve_sensor_->publish_state("");
+    }
+  }
 
   if (this->time_remaining_sensor_ != nullptr)
     this->time_remaining_sensor_->publish_state(remaining.has_value() ? (float) *remaining : NAN);
@@ -39,7 +46,7 @@ void SprinklerSensorsComponent::update() {
 void SprinklerSensorsComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "Sprinkler Sensors");
   LOG_UPDATE_INTERVAL(this);
-  LOG_SENSOR("  ", "Active valve", this->active_valve_sensor_);
+  LOG_TEXT_SENSOR("  ", "Active valve", this->active_valve_sensor_);
   LOG_SENSOR("  ", "Time remaining", this->time_remaining_sensor_);
   LOG_SENSOR("  ", "Progress", this->progress_sensor_);
   LOG_TEXT_SENSOR("  ", "Section name", this->section_name_sensor_);
