@@ -1,1 +1,14 @@
+name: "sprinkler_sensors"
+version: "1.0.0"
+esphome:
+  min_version: 2024.6.0
 
+dependencies:
+  esphome: "*"
+
+files:
+  - "sprinkler_sensors.cpp"
+  - "sprinkler_sensors.h"
+  - "sensor.py"
+  - "schema.py"
+  - "__init__.py"
