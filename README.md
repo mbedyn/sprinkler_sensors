@@ -34,5 +34,5 @@ Add this repository as an external component in your ESPHome YAML:
 
 ```yaml
 external_components:
-  - source: github://twoj_github/sprinkler_sensors
+  - source: github://mbedyn/sprinkler_sensors
     refresh: 60s
