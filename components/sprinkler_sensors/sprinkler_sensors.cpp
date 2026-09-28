@@ -14,7 +14,7 @@ void SprinklerSensorsComponent::update() {
   auto remaining = this->sprinkler_->time_remaining_active_valve();
 
   if (this->active_valve_sensor_ != nullptr)
-    this->active_valve_sensor_->publish_state(active.has_value() ? (float) *active : NAN);
+    this->active_valve_sensor_->publish_state(active.has_value() ? (float) (*active + 1) : NAN);
 
   if (this->time_remaining_sensor_ != nullptr)
     this->time_remaining_sensor_->publish_state(remaining.has_value() ? (float) *remaining : NAN);
